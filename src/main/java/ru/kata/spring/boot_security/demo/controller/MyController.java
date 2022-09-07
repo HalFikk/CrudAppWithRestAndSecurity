@@ -10,16 +10,23 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import java.util.List;
 
 @Controller
+@RequestMapping("/")
 public class MyController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("/admin")
     public String showAllUser(Model model) {
         List<User> allUser = userService.getAllUser();
         model.addAttribute("user", allUser);
-        return "index";
+        return "admin";
+    }
+
+    @GetMapping("/user/{id}")
+    public String getUser(Model model, @PathVariable("id") long id) {
+        model.addAttribute("user", userService.getUser(id));
+        return "user";
     }
 
     @GetMapping("/addNewUser")

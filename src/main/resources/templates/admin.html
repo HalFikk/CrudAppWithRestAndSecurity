@@ -13,6 +13,7 @@
         <th scope="col">ID</th>
         <th scope="col">Имя</th>
         <th scope="col">Фамилия</th>
+        <th scope="col">E-мейл</th>
         <th scope="col">Возраст</th>
         <th scope="col">Операции</th>
     </tr>
@@ -22,6 +23,7 @@
         <td th:text="${user.getId()}"/>
         <td th:text="${user.getName()}"/>
         <td th:text="${user.getSurname()}"/>
+        <td th:text="${user.getEmail()}"/>
         <td th:text="${user.getAge()}"/>
         <td>
             <a th:href="@{/update/{id}(id=${user.getId()})}">Редактировать</a>
