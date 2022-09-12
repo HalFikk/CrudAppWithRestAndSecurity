@@ -1,46 +1,54 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final UserDAO userDao;
     @Autowired
-    private UserDAO userDao;
+    public UserServiceImpl(UserDAO userDao) {
+        this.userDao = userDao;
+    }
 
-    @Override
+
     @Transactional
     public List<User> getAllUser() {
-        return userDao.getAllUser();
+        return userDao.findAll();
     }
 
     @Transactional
-    @Override
     public void saveUser(User user) {
-        userDao.saveUser(user);
+        userDao.save(user);
     }
 
     @Transactional
-    @Override
     public void deleteUser(long id) {
-        userDao.deleteUser(id);
+        userDao.deleteById(id);
     }
 
     @Transactional
-    @Override
     public void updateUser(long id, User user) {
-        userDao.updateUser(id, user);
+        user.setId(id);
+        userDao.save(user);
     }
 
-    @Override
     @Transactional
     public User getUser(long id) {
-        return userDao.getUser(id);
+        return userDao.getById(id);
     }
+    /*@Transactional
+    Optional<User> findUserByName(String username) {
+        userDao.findUserByName(username)
+    }*/
 }

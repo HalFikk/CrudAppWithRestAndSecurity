@@ -16,8 +16,6 @@ public class User {
     @Column
     private String surname;
     @Column
-    private String login;
-    @Column
     private String password;
     @Column
     @Size(min = 5, max = 50, message = "Не менее 5 символов!")
@@ -26,21 +24,20 @@ public class User {
     private String email;
     @Column
     private int age;
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    private Collection<Role> roles;*/
 
     public User() {
     }
 
-    public User(String name, String surname, String email, int age, String login, String password) {
+    public User(String name, String surname, String email, int age, String password) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.age = age;
-        this.login = login;
         this.password = password;
     }
 
@@ -84,14 +81,6 @@ public class User {
         this.email = email;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -99,4 +88,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    /*public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }*/
 }

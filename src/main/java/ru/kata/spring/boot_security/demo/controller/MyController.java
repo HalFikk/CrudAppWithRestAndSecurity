@@ -10,11 +10,18 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
 public class MyController {
 
-    @Autowired
     private UserService userService;
+    @Autowired
+    public MyController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/")
+    public String showIndex() {
+        return "index";
+    }
 
     @GetMapping("/admin")
     public String showAllUser(Model model) {
@@ -47,7 +54,7 @@ public class MyController {
         return "updateUser";
     }
 
-    @PostMapping("/updateUser/{id}")
+    @PostMapping("/updateUser")
     public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") long id) {
         userService.updateUser(id, user);
         return "redirect:/";
