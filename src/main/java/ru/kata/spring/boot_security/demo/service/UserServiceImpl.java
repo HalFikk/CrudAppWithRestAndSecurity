@@ -48,10 +48,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User getUserByUsername(String username) {
-        Optional<User> user = userDao.findByEmail(username);
+        Optional<User> user = userDao.findUserByEmailAndRoles(username);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("Такого пользователя нет");
         }
+        System.out.println(user.get().getRoles());
         return user.get();
     }
 }
