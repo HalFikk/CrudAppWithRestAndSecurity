@@ -1,6 +1,7 @@
-/*
 package ru.kata.spring.boot_security.demo.model;
 
+
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
@@ -38,4 +39,3 @@ public class Role {
         this.role = role;
     }
 }
-*/

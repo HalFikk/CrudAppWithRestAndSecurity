@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class MyController {
 
-    private UserService userService;
+    private final UserService userService;
     @Autowired
     public MyController(UserService userService) {
         this.userService = userService;
@@ -30,9 +31,9 @@ public class MyController {
         return "admin";
     }
 
-    @GetMapping("/user/{id}")
-    public String getUser(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", userService.getUser(id));
+    @GetMapping("/user")
+    public String getUser(Model model, Principal principal) {
+        model.addAttribute("user", userService.getUserByUsername(principal.getName()));
         return "user";
     }
 
@@ -54,7 +55,7 @@ public class MyController {
         return "updateUser";
     }
 
-    @PostMapping("/updateUser")
+    @PostMapping("/updateUser/{id}")
     public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") long id) {
         userService.updateUser(id, user);
         return "redirect:/";

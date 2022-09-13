@@ -14,11 +14,6 @@ import java.util.Optional;
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
-    /*insert into user (name, surname, password, email, age) VALUES
-('Alex', 'Loktaev', '$2a$12$DzZpsCnQMJitf4FdLyZsaeQEmdv65yD7kunqjLMP0/u98L9DAXsty', 'mail1@mail.ru', 26),
-        ('Oleg', 'Krochak', '$2a$12$8flBSDWHKAsPXc.p3u5equxx3xifVhLtHjCa4qr25sE1/YVcUFTiG', 'mail2@mail.ru', 30),
-        ('Emma', 'Ivanova', '$2a$12$/qJAAmXiGH2zCDt6A3esV.hZ/poXuUAIb92sW0ItSpIn7YOU/zqES', 'mail3@mail.ru', 40);*/
-
     private final UserDAO userDAO;
 
     @Autowired
