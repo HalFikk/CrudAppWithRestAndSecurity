@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>User, welcome spring boot security page!</h1>
-<!--<table class="table">
+<table class="table">
     <thead>
     <tr>
         <th scope="col">ID</th>
@@ -23,13 +23,10 @@
         <td th:text="*{surname}"/>
         <td th:text="*{email}"/>
         <td th:text="*{age}"/>
-        <td>
-            <a th:href="@{/update/{id}(id=${user.getId()})}">Редактировать</a>
-            &lt;!&ndash;<a th:href="@{/delete/{id}(id=${user.getId()})}">Удалить</a>&ndash;&gt;
-        </td>
-
     </tr>
     </tbody>
-</table>-->
+</table>
+<input type="button" value="Редактировать"
+       onclick="window.location.href='user/update'">
 </body>
 </html>

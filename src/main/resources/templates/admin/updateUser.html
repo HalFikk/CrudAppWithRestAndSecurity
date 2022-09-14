@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SaveUser</title>
+</head>
+<body>
+<h1>Заполните данные:</h1>
+
+<form th:method="POST" th:action="@{/updateUser/{id}(id=${user.getId()})}" th:object="${user}">
+    <label for="name">Имя: </label>
+    <input type="text" th:field="*{name}" id="name">
+    <br><br>
+    <label for="surname">Фамилия: </label>
+    <input type="text" th:field="*{surname}" id="surname">
+    <br><br>
+    <label for="password">Пароль: </label>
+    <input type="text" th:field="*{password}" id="password">
+    <br><br>
+    <label for="email">Е-майл: </label>
+    <input type="text" th:field="*{email}" id="email">
+    <br><br>
+    <label for="age">Возраст: </label>
+    <input type="text" th:field="*{age}" id="age">
+    <br><br>
+    <input type="submit" value="Изменить">
+
+</form>
+
+</body>
+</html>

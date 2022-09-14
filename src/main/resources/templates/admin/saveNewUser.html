@@ -8,7 +8,7 @@
 <body>
 <h1>Заполните данные:</h1>
 
-<form th:method="POST" th:action="@{/saveNewUser}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin/saveNewUser}" th:object="${user}">
 
   Имя: <input type="text" th:field="*{name}">
   <br><br>
@@ -18,7 +18,11 @@
   <br><br>
   Возраст: <input type="text" th:field="*{age}">
   <br><br>
+  Пароль: <input type="text" th:field="*{password}">
+  <br><br>
   <input type="submit" value="Добавить">
+
+</form>
 
 </body>
 </html>

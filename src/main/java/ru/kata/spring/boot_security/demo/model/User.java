@@ -28,23 +28,14 @@ public class User implements UserDetails {
     private String email;
     @Column
     private int age;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
     public User() {
     }
-
-    /*public User(String name, String surname, String email, int age, String password, Collection<Role> roles) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.age = age;
-        this.password = password;
-        this.roles = roles;
-    }*/
 
     public long getId() {
         return id;
@@ -104,12 +95,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.getRoles();
+        return roles;
     }
 
     @Override
     public String getUsername() {
-        return this.email;
+        return email;
     }
 
     @Override

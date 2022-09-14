@@ -8,7 +8,7 @@
 <body>
 <h1>Заполните данные:</h1>
 
-<form th:method="POST" th:action="@{/updateUser/{id}(id=${user.getId()})" th:object="${user}">
+<form th:method="POST" th:action="@{/user/updateUser/{id}(id=${user.getId()})}" th:object="${user}">
     <label for="name">Имя: </label>
     <input type="text" th:field="*{name}" id="name">
     <br><br>
