@@ -6,6 +6,7 @@
   <title>SaveUser</title>
 </head>
 <body>
+<center>
 <h1>Заполните данные:</h1>
 
 <form th:method="POST" th:action="@{/admin/saveNewUser}" th:object="${user}">
@@ -23,6 +24,6 @@
   <input type="submit" value="Добавить">
 
 </form>
-
+</center>
 </body>
 </html>

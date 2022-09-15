@@ -6,6 +6,7 @@
     <title>SaveUser</title>
 </head>
 <body>
+<center>
 <h1>Заполните данные:</h1>
 
 <form th:method="POST" th:action="@{/user/updateUser/{id}(id=${user.getId()})}" th:object="${user}">
@@ -18,12 +19,15 @@
     <label for="email">Е-майл: </label>
     <input type="text" th:field="*{email}" id="email">
     <br><br>
+    <label for="password">Пароль: </label>
+    <input type="text" th:field="*{password}" id="password">
+    <br><br>
     <label for="age">Возраст: </label>
     <input type="text" th:field="*{age}" id="age">
     <br><br>
     <input type="submit" value="Изменить">
 
 </form>
-
+</center>
 </body>
 </html>

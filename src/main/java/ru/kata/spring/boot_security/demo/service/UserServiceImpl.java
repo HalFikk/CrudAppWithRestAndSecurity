@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
     public void updateUser(long id, User user) {
         user.setId(id);
         userDao.save(user);
-        System.out.println(user);
     }
 
     public User getUser(long id) {
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getUserByUsername(String username) {
-        Optional<User> user = userDao.findUserByEmail(username);
+        Optional<User> user = userDao.getUserByEmail(username);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("Такого пользователя нет");
         }

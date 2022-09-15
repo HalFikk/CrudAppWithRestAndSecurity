@@ -6,6 +6,7 @@
     <title>SaveUser</title>
 </head>
 <body>
+<center>
 <h1>Заполните данные:</h1>
 
 <form th:method="POST" th:action="@{/updateUser/{id}(id=${user.getId()})}" th:object="${user}">
@@ -27,6 +28,6 @@
     <input type="submit" value="Изменить">
 
 </form>
-
+</center>
 </body>
 </html>

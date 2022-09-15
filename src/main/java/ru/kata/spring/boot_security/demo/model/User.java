@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
-@Table
+@Table (name = "usr")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +27,9 @@ public class User implements UserDetails {
     private String email;
     @Column
     private int age;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    @ManyToMany
+    @JoinTable(name = "usr_role",
+            joinColumns = @JoinColumn(name = "usr_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 

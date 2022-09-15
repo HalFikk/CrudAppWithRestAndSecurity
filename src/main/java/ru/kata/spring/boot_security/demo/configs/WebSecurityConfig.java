@@ -30,7 +30,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/").permitAll()
                 .and()
-                .formLogin().successHandler(successUserHandler)
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login_process")
+                .failureUrl("/login?error")
+                .successHandler(successUserHandler)
                 .permitAll()
                 .and()
                 .logout()
@@ -42,13 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(12);
     }
 
-    //Аутентификация с помощью AuthenticationManagerBuilder
-    /*@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService)
-                .passwordEncoder(passwordEncoder());
-    }*/
-    // Аутентификация с помощью Dao
     @Bean
     protected DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
