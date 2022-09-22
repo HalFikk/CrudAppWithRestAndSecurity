@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -9,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
-@Table (name = "usr")
+@Table(name = "usr")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +28,8 @@ public class User implements UserDetails {
     private String email;
     @Column
     private int age;
+    @Column
+    private String role;
     @ManyToMany
     @JoinTable(name = "usr_role",
             joinColumns = @JoinColumn(name = "usr_id", referencedColumnName = "id"),
@@ -92,6 +95,14 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -131,6 +142,7 @@ public class User implements UserDetails {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", role='" + role + '\'' +
                 ", roles=" + roles +
                 '}';
     }

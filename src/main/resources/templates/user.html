@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Страница пользователя</title>
+</head>
+<body>
+
+<div class="container-fluid m-0 p-0">
+
+    <nav class="navbar navbar-dark bg-dark">
+        <h3 class="text-white text-left" th:object="${user}"
+            th:text="${user.getEmail()} + ' с ролью ' + ${user.getRoles()}"></h3>
+        <form class="form-inline" th:action="@{/logout}" th:method="POST">
+            <button type="submit" class="btn btn-primary">Выход</button>
+        </form>
+    </nav>
+
+    <div class="container-fluid">
+
+        <!-- навигационная панель -->
+        <div class="row">
+            <div class="col-md-2">
+                <ul class="nav nav-pills fs-5 w-100">
+                    <li class="nav-item w-100">
+                        <a class="nav-link w-100 active mt-3" th:href="@{/user}">User</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- таблица -->
+            <div class="col-md-10 p-3 bg-light">
+                <div class="h1">Информация о пользователе</div>
+                <div class="border h5 pl-3 pt-2 pb-2 m-0">О пользователе</div>
+
+                <div class="bg-white border p-3 ">
+
+                    <table class="table table-striped border-top table-responsive-md text-left">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Фамилия</th>
+                            <th scope="col">E-мейл</th>
+                            <th scope="col">Возраст</th>
+                            <th scope="col">Роль</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:object="${user}" th:each="role: ${listRole}">
+                            <td th:text="*{id}"/>
+                            <td th:text="*{name}"/>
+                            <td th:text="*{surname}"/>
+                            <td th:text="*{email}"/>
+                            <td th:text="*{age}"/>
+                            <td th:text="${role.getRole()}"/>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

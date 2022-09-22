@@ -20,18 +20,9 @@ public class UserController {
 
     @GetMapping
     public String getUserPage(Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByUsername(principal.getName()));
-        return "user/user";
-    }
-
-    @GetMapping("/update")
-    public String updatePage(Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByUsername(principal.getName()));
-        return "user/updateUser";
-    }
-    @PostMapping("/updateUser/{id}")
-    public String updateUser(@PathVariable("id") long id, @ModelAttribute("user") User user) {
-        userService.updateUser(id, user);
-        return "redirect:/";
+        User user = userService.getUserByUsername(principal.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("listRole", user.getRoles());
+        return "user";
     }
 }
