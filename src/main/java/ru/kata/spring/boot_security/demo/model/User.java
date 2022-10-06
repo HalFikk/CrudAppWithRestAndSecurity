@@ -2,11 +2,9 @@ package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Collection;
 
 @Entity
@@ -16,19 +14,25 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
+    @NotEmpty
     private String name;
     @Column
+    @NotEmpty
     private String surname;
     @Column
+    @NotEmpty
     private String password;
     @Column
-    @Size(min = 5, max = 50, message = "Не менее 5 символов!")
-    @Pattern(regexp = "\"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$\"",
-            message = "Укажите адрес в формате ххххх@хххx.хх")
+    @Email
+    @NotEmpty
     private String email;
     @Column
+    @NotEmpty
+    @Min(value = 0)
+    @Max(value = 120)
     private int age;
     @Column
+    @NotEmpty
     private String role;
     @ManyToMany
     @JoinTable(name = "usr_role",
