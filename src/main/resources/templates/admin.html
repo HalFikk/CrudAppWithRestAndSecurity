@@ -16,7 +16,7 @@
 <div class="container-fluid m-0 p-0">
 
     <nav class="navbar navbar-dark bg-dark">
-        <h3 class="text-white text-left"></h3>
+        <h3 class="text-white text-left" id="navbar"></h3>
         <form class="form-inline" th:action="@{/logout}" th:method="POST">
             <button type="submit" class="btn btn-primary">Выход</button>
         </form>
@@ -46,8 +46,9 @@
                         <!-- Навигационная панель со вкладками -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home"
-                                   role="tab" aria-controls="home" aria-selected="true">Все пользователи</a>
+                                <a class="nav-link active" href="#home" data-toggle="tab" id="usersTable">
+                                    Все пользователи
+                                </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile"
@@ -75,232 +76,184 @@
                                             <th scope="col">Удалить</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr th:each="user: ${listUser}">
-                                            <td th:text="${user.getId()}"/>
-                                            <td th:text="${user.getName()}"/>
-                                            <td th:text="${user.getSurname()}"/>
-                                            <td th:text="${user.getAge()}"/>
-                                            <td th:text="${user.getEmail()}"/>
-                                            <td th:text="${user.getRoles()}"/>
-                                            <!-- Редактирование -->
-                                            <td>
-                                                <!-- Кнопка-триггер модального окна -->
-                                                <button type="button" class="btn btn-info" data-toggle="modal"
-                                                        th:data-target="${'#modalEdit' + user.id}"> Редактировать
-                                                </button>
-                                                <!-- Модальное окно редактировать -->
-                                                <div class="modal" th:id="${'modalEdit' + user.id}" tabindex="-1">
-                                                    <form th:method="PATCH" th:action="@{'/admin/' + ${user.id}}">
-                                                        <div class="modal-dialog modal-dialog-centered">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="modalEditLabel">
-                                                                        Редактирование пользователя</h5>
+                                        <tbody id="adminTable">
+                                        <!-- Модальное окно edit -->
+                                        <div class="modal" id="modalEdit" tabindex="-1">
+                                            <form id="edit-user">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit user</h5>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="text-center">
+                                                                <div class="form-group">
+                                                                    <label for="editId">ID</label>
+                                                                    <input type="number" class="form-control"
+                                                                           id="editId" disabled>
                                                                 </div>
-                                                                <div class="modal-body">
-                                                                    <div class="text-center">
-                                                                        <div class="form-group">
-                                                                            <label for="editId"><b>ID</b></label>
-                                                                            <input type="number" class="form-control"
-                                                                                   th:value="*{user.id}" id="editId"
-                                                                                   disabled>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="editName"><b>Имя</b></label>
-                                                                            <input type="text" class="form-control"
-                                                                                   name="name"
-                                                                                   th:value="*{user.name}"
-                                                                                   id="editName">
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="editSurname"><b>Фамилия</b></label>
-                                                                            <input type="text" class="form-control"
-                                                                                   name="surname"
-                                                                                   th:value="*{user.surname}"
-                                                                                   id="editSurname">
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="editAge"><b>Возраст</b></label>
-                                                                            <input type="number" min="1" max="127"
-                                                                                   step="1" class="form-control"
-                                                                                   name="age" th:value="*{user.age}"
-                                                                                   id="editAge">
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="editUsername"><b>Е-майл</b></label>
-                                                                            <input type="text" class="form-control"
-                                                                                   name="email"
-                                                                                   th:value="*{user.email}"
-                                                                                   id="editUsername">
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="editPassword"><b>Пароль</b></label>
-                                                                            <input type="password" class="form-control"
-                                                                                   name="password"
-                                                                                   th:value="*{user.password}"
-                                                                                   id="editPassword">
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="editRoles"><b>Роль</b></label>
-                                                                            <select multiple
-                                                                                    class="form-control form-control-sm"
-                                                                                    id="editRoles"
-                                                                                    name="role" th:value="*{user.role}"
-                                                                                    size="2" required>
-                                                                                <option th:each="role : ${listRole}"
-                                                                                        th:text="${role}">Роль
-                                                                                </option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
+                                                                <div class="form-group">
+                                                                    <label for="editName">Имя</label>
+                                                                    <input type="text" class="form-control"
+                                                                           id="editName">
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Закрыть
-                                                                    </button>
-                                                                    <button type="submit" class="btn btn-primary">
-                                                                        Сохранить
-                                                                    </button>
+                                                                <div class="form-group">
+                                                                    <label for="editSurname">Фамилия</label>
+                                                                    <input type="text" class="form-control"
+                                                                           id="editSurname">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="editAge">Возраст</label>
+                                                                    <input type="number" min="1" max="127" step="1"
+                                                                           class="form-control" id="editAge" required>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="editEmail">E-майл</label>
+                                                                    <input type="text" class="form-control" name="email"
+                                                                           id="editEmail" required>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="editPassword">Пароль</label>
+                                                                    <input type="password" class="form-control"
+                                                                           id="editPassword" required>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="editRoles">Роль</label>
+                                                                    <select multiple
+                                                                            class="form-control form-control-sm"
+                                                                            id="editRoles" size="2" required>
+                                                                        <option>ADMIN</option>
+                                                                        <option>USER</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Закрыть
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                    data-dismiss="modal">Сохранить
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </td>
-                                            <!-- Удаление -->
-                                            <td>
-                                                <!-- Кнопка-триггер модального окна -->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                        th:data-target="${'#modalDelete' + user.id}"> Удалить
-                                                </button>
-                                                <!-- Модальное окно удаления -->
-                                                <div class="modal" th:id="${'modalDelete' + user.id}" tabindex="-1">
-                                                    <form th:method="DELETE"
-                                                          th:action="@{'/admin/delete/' + ${user.id}}">
-                                                        <div class="modal-dialog modal-dialog-centered">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="modalDeleteLabel">
-                                                                        Редактирование пользователя</h5>
+                                            </form>
+                                        </div>
+                                        <!-- Конец модального окна edit -->
+                                        <!-- Модальное окно delete -->
+                                        <div class="modal" id="modalDelete" tabindex="-1">
+                                            <form>
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Delete user</h5>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="text-center">
+                                                                <div class="form-group">
+                                                                    <label for="deleteId">ID</label>
+                                                                    <input type="number" class="form-control"
+                                                                           id="deleteId" disabled>
                                                                 </div>
-                                                                <div class="modal-body">
-                                                                    <div class="text-center">
-                                                                        <div class="form-group">
-                                                                            <label for="deleteId"><b>ID</b></label>
-                                                                            <input type="number" class="form-control"
-                                                                                   th:value="*{user.id}" id="deleteId"
-                                                                                   disabled>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="deleteName"><b>Имя</b></label>
-                                                                            <input type="text" class="form-control"
-                                                                                   name="name"
-                                                                                   th:value="*{user.name}"
-                                                                                   id="deleteName" disabled>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="deleteSurname"><b>Фамилия</b></label>
-                                                                            <input type="text" class="form-control"
-                                                                                   name="surname"
-                                                                                   th:value="*{user.surname}"
-                                                                                   id="deleteSurname" disabled>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="deleteAge"><b>Возраст</b></label>
-                                                                            <input type="number" min="1" max="127"
-                                                                                   step="1" class="form-control"
-                                                                                   name="age" th:value="*{user.age}"
-                                                                                   id="deleteAge" disabled>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="deleteUsername"><b>Е-майл</b></label>
-                                                                            <input type="text" class="form-control"
-                                                                                   name="email"
-                                                                                   th:value="*{user.email}"
-                                                                                   id="deleteUsername" disabled>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="deletePassword"><b>Пароль</b></label>
-                                                                            <input type="password" class="form-control"
-                                                                                   name="password"
-                                                                                   th:value="*{user.password}"
-                                                                                   id="deletePassword" disabled>
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label for="deleteRoles"><b>Роль</b></label>
-                                                                            <select multiple
-                                                                                    class="form-control form-control-sm"
-                                                                                    id="deleteRoles"
-                                                                                    name="role" th:value="*{user.role}"
-                                                                                    size="2" required disabled>
-                                                                                <option th:each="role : ${listRole}"
-                                                                                        th:text="${role}">Роль
-                                                                                </option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
+                                                                <div class="form-group">
+                                                                    <label for="deleteName">Имя</label>
+                                                                    <input type="text" class="form-control"
+                                                                           id="deleteName" disabled>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Закрыть
-                                                                    </button>
-                                                                    <button type="submit" class="btn btn-primary">
-                                                                        Удалить
-                                                                    </button>
+                                                                <div class="form-group">
+                                                                    <label for="deleteSurname">Фамилия</label>
+                                                                    <input type="text" class="form-control"
+                                                                           id="deleteSurname" disabled>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="deleteAge">Возраст</label>
+                                                                    <input type="number" min="1" max="127"
+                                                                           step="1"
+                                                                           class="form-control" id="deleteAge"
+                                                                           disabled>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="deleteEmail">E-майл</label>
+                                                                    <input type="text" class="form-control"
+                                                                           id="deleteEmail" disabled>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="deleteRoles">Роль</label>
+                                                                    <select multiple
+                                                                            class="form-control form-control-sm"
+                                                                            id="deleteRoles" size="2" disabled>
+                                                                        <option>ADMIN</option>
+                                                                        <option>USER</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Закрыть
+                                                            </button>
+                                                            <button type="submit" class="btn btn-danger"
+                                                                    data-dismiss="modal">Удалить
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </form>
+                                        </div>
+                                        <!-- Конец модального окна delete -->
                                         </tbody>
                                     </table>
                                 </div>
-
                             </div>
                             <!-- Вторая вкладка добавить User-а -->
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <div class="text-center">
                                     <div class="container">
                                         <div class="row">
+                                            <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                            </div>
-                                            <div class="col-md-4">
-
-                                                <form class="form-group"
-                                                      method="post">
-                                                    <label for="name">Имя: </label>
-                                                    <input class="form-control"
-                                                           type="text"
-                                                           id="name">
-                                                    <label for="surname">Фамилия: </label>
-                                                    <input class="form-control" type="text"
-                                                           id="surname">
-                                                    <label for="age">Возраст: </label>
-                                                    <input class="form-control" type="text" id="age">
-                                                    <label for="email">Е-майл: </label>
-                                                    <input class="form-control" type="text" id="email">
-                                                    <label for="password">Пароль: </label>
-                                                    <input class="form-control" type="text" id="password">
-                                                    <label for="newRoles"><b>Роль</b></label>
-                                                    <select multiple class="form-control form-control-sm" id="newRoles"
-                                                            name="role" size="2" required>
-                                                        <option>Роль
-                                                        </option>
-                                                    </select>
-                                                    <br>
-                                                    <button type="submit" class="btn btn-primary">Добавить</button>
+                                                <form id="addUserForm">
+                                                    <div class="form-group">
+                                                        <label>Имя</label>
+                                                        <input type="text" id="newName" class="form-control"
+                                                               placeholder="Name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Фамилия</label>
+                                                        <input type="text" id="newSurname" class="form-control"
+                                                               placeholder="Surname">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Возраст</label>
+                                                        <input type="number" id="newAge" class="form-control"
+                                                               placeholder="Age" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Е-майл</label>
+                                                        <input type="text" id="newEmail" class="form-control"
+                                                               placeholder="Email" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Пароль</label>
+                                                        <input type="password" id="newPassword" class="form-control"
+                                                               placeholder="Password" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Роль</label>
+                                                        <select multiple class="form-control form-control-sm"
+                                                                id="newUserRole" size="2" required>
+                                                            <option>ADMIN</option>
+                                                            <option>USER</option>
+                                                        </select>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success">Добавить</button>
                                                 </form>
-
                                             </div>
-                                            <div class="col-md-4">
-                                            </div>
+                                            <div class="col-md-4"></div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -325,31 +278,18 @@
                                         <th scope="col">Роль</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td/>
-                                        <td/>
-                                        <td/>
-                                        <td/>
-                                        <td/>
-                                        <td/>
-                                    </tr>
+                                    <tbody id="userTable">
                                     </tbody>
-
                                 </table>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
-
-<script src="script.js"></script>
+<script src="admin.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
