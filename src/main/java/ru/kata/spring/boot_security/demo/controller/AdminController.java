@@ -31,10 +31,11 @@ public class AdminController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void saveNewUser(@RequestBody User user) {
+    public User saveNewUser(@RequestBody User user) {
         System.out.println(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
+        return user;
     }
 
     @PutMapping (value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

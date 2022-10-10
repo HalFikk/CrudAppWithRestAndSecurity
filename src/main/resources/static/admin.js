@@ -2,6 +2,7 @@ const URL = 'http://localhost:8080/api/admin'
 let output
 const deleteButton = document.querySelector('.btn-danger')
 const editButton = document.querySelector('.btn-primary')
+const navbar = document.querySelector('.navbar-brand')
 let editButtonIsPressed = false
 let delButtonIsPressed = false
 let children
@@ -25,8 +26,9 @@ const tableOfUser = (user) => {
     `
 }
 
-const tableOfUsers = (user) => {
-    output += `
+const tableOfUsers = (users) => {
+    users.forEach(user => {
+        output += `
         <tr>
             <td>${user.id}</td>
             <td>${user.name}</td>
@@ -34,12 +36,14 @@ const tableOfUsers = (user) => {
             <td>${user.age}</td>
             <td>${user.email}</td>
             <td>${user.role}</td>
-            <td><button type="button" class="btn btn-info" data-toggle="modal" id="edit"
-                data-id=${user.id} data-target="#modalEdit"> Редактировать</button></td>
-            <td><button type="button" class="btn btn-danger" data-toggle="modal" id="delete"
+            <td><button type="button" class="btn btn-info" data-toggle="modal" id="edit" 
+                    data-id=${user.id} data-target="#modalEdit"> Редактировать</button></td>
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" id="delete" 
                     data-id=${user.id} data-target="#modalDelete"> Удалить</button></td>
         </tr>
         `
+    })
+    adminTable.innerHTML = output
 }
 
 fetch(URL + '/page')
@@ -61,12 +65,7 @@ fetch(URL + '/page')
 
 fetch(URL + '/users')
     .then(res => res.json())
-    .then(user => {
-        user.forEach(user => {
-            tableOfUsers(user)
-        })
-        adminTable.innerHTML = output
-    })
+    .then(data => tableOfUsers(data))
 
 addUserForm.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -86,6 +85,7 @@ addUserForm.addEventListener('submit', (e) => {
     })
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             tableOfUser(data)
         })
         .then(addUserForm.reset())
